@@ -31,28 +31,55 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 let username = localStorage.getItem("username");
 document.getElementById("username").value = localStorage.getItem("username");
+let database = getDatabase(app);
 
 document.getElementById("login").addEventListener("click", function () {
   username = document.getElementById("username").value;
   localStorage.setItem("username", document.getElementById("username").value);
+  alert("Logged in");
 });
 
-document.getElementById("submit").addEventListener("click", function (e) {
+document.getElementById("submit").addEventListener("click", function () {
   console.log(username);
   let database = getDatabase(app);
-  let newRef = ref(database, "users/" + username + "/" + document.getElementById("urut").value);
+  let newRef = ref(
+    database,
+    "users/" + username + document.getElementById("urut").value
+  );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi").value,
     jumlah: document.getElementById("jumlah").value,
     tanggal: document.getElementById("date").value,
+    tipe: "tambah",
   });
-  let keys = localStorage.getItem("generatedKeys");
-  if (keys) {
-    keys = JSON.parse(keys);
-    keys.push(newRef.key);
-  } else {
-    keys = [newRef.key];
-  }
-  localStorage.setItem("generatedKeys", JSON.stringify(keys));
-  alert("Saved");
+  alert("Tersimpan");
 });
+
+document.getElementById("submit2").addEventListener("click", function () {
+  console.log(username);
+  let newRef = ref(
+    database,
+    "users/" + username + document.getElementById("urut2").value
+  );
+  set(newRef, {
+    deskripsi: document.getElementById("deskripsi2").value,
+    jumlah: document.getElementById("jumlah2").value,
+    tanggal: document.getElementById("date2").value,
+    tipe: "kurang",
+  });
+  alert("Tersimpan");
+});
+
+document
+  .getElementById("refresh")
+  .addEventListener("click", function (refresh) {
+    let getdata = ref(
+      database,
+      `users/${username}/${document.getElementById("urut")}`
+    );
+    get(getdata).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val().deskripsi);
+      }
+    });
+  });

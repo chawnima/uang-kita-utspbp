@@ -76,18 +76,17 @@
     height:100%;
     align-items: center;
     display:flex;
-    justify-content: right;
+    justify-content: center;
     border-top-left-radius: 70px;
     white-space: nowrap;
     padding-right:10px;
     transition: border-top-left-radius 0.2s;
     color:white;
 }
-.log-in, .log-sign{
+.log-in{
     display:flex;
     align-items: center;
     font-weight: bold;
-    font-size:20px;
     width:150px;
     justify-content: center;
     margin-left:20px;
@@ -104,10 +103,7 @@
     background-color: #2C7865;
 }
 
-.log-in:hover{
-    background-color: #75ad59;
-    cursor:pointer;
-}
+
 .log-sign:hover{
     background-color: #276b5a;
     cursor:pointer;

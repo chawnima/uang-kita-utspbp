@@ -296,6 +296,9 @@
     padding:0px;
     margin-top: 10%;
 }
+#refresh{
+    margin-left: 2rem;
+}
 
 .form {
     display: flex;
@@ -347,6 +350,9 @@ button[type="submit"]:hover {
     background-color: #45a049;
 }
 
+button[type="button"]{
+    margin-right: 1rem;
+}
 .titletambahp1{
     font-size: 1.3rem;
     margin-top:50px;
