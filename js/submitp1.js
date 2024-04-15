@@ -147,6 +147,5 @@ function htmlinj(extractData, nom) {
   historyItem.appendChild(infoContainer);
   document.getElementById("historyItems").appendChild(historyItem);
 }
-refresh();
 document.getElementById("refresh").addEventListener("click", refresh);
 
