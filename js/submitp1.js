@@ -71,47 +71,44 @@ document.getElementById("submit2").addEventListener("click", function () {
   alert("Tersimpan");
 });
 
-document
-  .getElementById("refresh")
-  .addEventListener("click", function (refresh) {
-    let username = localStorage.getItem("username");
-    if (typeof username === "string" && username.length > 0) {
-      document.getElementById("historyItems").innerHTML = "";
-      let getdata = ref(database, `${username}`);
-      get(getdata).then((snapshot) => {
-        if (snapshot.exists()) {
-          let jumlahtotal = 0;
-          let kurangtotal = 0;
-          snapshot.forEach(function (childSnapshot) {
-            let extractData = [];
-            let childKey = childSnapshot.key;
-            let childData = childSnapshot.val();
-            let no = childKey;
-            console.log("Child key:", childKey);
-            Object.keys(childData).forEach(function (key) {
-              extractData[key] = childData[key];
-              console.log(extractData);
-            });
-            if (extractData.jumlah) {
-              jumlahtotal += parseInt(extractData.jumlah);
-              console.log(`ril = ${extractData.jumlah}`);
-            } else if (extractData.jumlah2) {
-              kurangtotal += parseInt(extractData.jumlah2);
-            }
-            htmlinj(extractData, no);
+function refresh() {
+  let username = localStorage.getItem("username");
+  if (typeof username === "string" && username.length > 0) {
+    document.getElementById("historyItems").innerHTML = "";
+    let getdata = ref(database, `${username}`);
+    get(getdata).then((snapshot) => {
+      if (snapshot.exists()) {
+        let jumlahtotal = 0;
+        let kurangtotal = 0;
+        snapshot.forEach(function (childSnapshot) {
+          let extractData = [];
+          let childKey = childSnapshot.key;
+          let childData = childSnapshot.val();
+          let no = childKey;
+          console.log("Child key:", childKey);
+          Object.keys(childData).forEach(function (key) {
+            extractData[key] = childData[key];
+            console.log(extractData);
           });
-          console.log(typeof jumlahtotal);
-          console.log(`jumlaha = ${jumlahtotal}`);
-          document.getElementById("jumlahTotal").innerHTML =
-            "Rp. " + jumlahtotal;
-          document.getElementById("jumlahKeluar").innerHTML =
-            "Rp. " + kurangtotal;
-        }
-      });
-    } else {
-      alert(`Username -${username}- tidak valid.`);
-    }
-  });
+          if (extractData.jumlah) {
+            jumlahtotal += parseInt(extractData.jumlah);
+            console.log(`ril = ${extractData.jumlah}`);
+          } else if (extractData.jumlah2) {
+            kurangtotal += parseInt(extractData.jumlah2);
+          }
+          htmlinj(extractData, no);
+        });
+        console.log(typeof jumlahtotal);
+        console.log(`jumlaha = ${jumlahtotal}`);
+        document.getElementById("jumlahTotal").innerHTML = "Rp. " + jumlahtotal;
+        document.getElementById("jumlahKeluar").innerHTML =
+          "Rp. " + kurangtotal;
+      }
+    });
+  } else {
+    alert(`Username -${username}- tidak valid.`);
+  }
+}
 
 function htmlinj(extractData, nom) {
   const historyItem = document.createElement("div");
@@ -152,3 +149,6 @@ function htmlinj(extractData, nom) {
   historyItem.appendChild(infoContainer);
   document.getElementById("historyItems").appendChild(historyItem);
 }
+
+document.getElementById("refresh").addEventListener("click", refresh());
+
