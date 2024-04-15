@@ -217,7 +217,10 @@
     color:green;
     flex:1;
 }
-
+.no{
+    flex:1;
+    text-align: right;
+}
 .jatuhtempo{
     background-color:white;
     flex:1;

@@ -30,9 +30,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const database = getDatabase(app);
 let username = localStorage.getItem("username");
 document.getElementById("username").value = localStorage.getItem("username");
-const database = getDatabase(app);
 
 document.getElementById("login").addEventListener("click", function () {
   username = document.getElementById("username").value;
@@ -64,7 +64,7 @@ document.getElementById("submit2").addEventListener("click", function () {
   );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi2").value,
-    jumlah: document.getElementById("jumlah2").value,
+    jumlah2: document.getElementById("jumlah2").value,
     tanggal: document.getElementById("date2").value,
     tipe: "kurang",
   });
@@ -76,39 +76,51 @@ document
   .addEventListener("click", function (refresh) {
     let username = localStorage.getItem("username");
     if (typeof username === "string" && username.length > 0) {
+      document.getElementById("historyItems").innerHTML = "";
       let getdata = ref(database, `${username}`);
       get(getdata).then((snapshot) => {
         if (snapshot.exists()) {
           let jumlahtotal = 0;
+          let kurangtotal = 0;
           snapshot.forEach(function (childSnapshot) {
             let extractData = [];
-            var childKey = childSnapshot.key;
-            var childData = childSnapshot.val();
+            let childKey = childSnapshot.key;
+            let childData = childSnapshot.val();
+            let no = childKey;
             console.log("Child key:", childKey);
             Object.keys(childData).forEach(function (key) {
               extractData[key] = childData[key];
               console.log(extractData);
-              // htmlinj(extractData);
             });
-            jumlahtotal += parseInt(extractData.jumlah);
-            console.log(`ril = ${extractData.jumlah}`);
+            if (extractData.jumlah) {
+              jumlahtotal += parseInt(extractData.jumlah);
+              console.log(`ril = ${extractData.jumlah}`);
+            } else if (extractData.jumlah2) {
+              kurangtotal += parseInt(extractData.jumlah2);
+            }
+            htmlinj(extractData, no);
           });
           console.log(typeof jumlahtotal);
           console.log(`jumlaha = ${jumlahtotal}`);
           document.getElementById("jumlahTotal").innerHTML =
             "Rp. " + jumlahtotal;
+          document.getElementById("jumlahKeluar").innerHTML =
+            "Rp. " + kurangtotal;
         }
       });
     } else {
-      console.error("Invalid username:", username);
+      alert(`Username -${username}- tidak valid.`);
     }
   });
-/*function htmlinj(extractData) {
+
+function htmlinj(extractData, nom) {
   const historyItem = document.createElement("div");
   historyItem.classList.add("history-anakan");
 
   const img = document.createElement("img");
-  img.src = `img/money-${transaction.type}-svgrepo-com.svg`;
+  img.src = `img/money-${
+    extractData.tipe === "tambah" ? "recive" : "send"
+  }-svgrepo-com.svg`;
   img.classList.add("imgduit");
   historyItem.appendChild(img);
 
@@ -117,23 +129,26 @@ document
 
   const amount = document.createElement("div");
   amount.classList.add(
-    `duit${transaction.type === "recive" ? "ijo" : "merah"}`
+    `duit${extractData.tipe === "tambah" ? "ijo" : "merah"}`
   );
-  amount.textContent = `Rp. ${extractData.jumlah}`;
+  amount.textContent = `Rp. ${extractData.jumlah || extractData.jumlah2 || 0}`;
   infoContainer.appendChild(amount);
 
   const description = document.createElement("div");
   description.classList.add("buat-apah");
-  description.textContent = transaction.description;
+  description.textContent = extractData.deskripsi || "Tidak ada deskripsi";
   infoContainer.appendChild(description);
 
   const date = document.createElement("div");
   date.classList.add("kapan");
-  date.textContent = transaction.date;
+  date.textContent = extractData.tanggal || "Tidak ada tanggal";
   infoContainer.appendChild(date);
 
+  const no = document.createElement("div");
+  no.classList.add("no");
+  no.textContent = `No : ${nom}` || "Tidak ada tanggal";
+  infoContainer.appendChild(no);
+
   historyItem.appendChild(infoContainer);
-  fragment.appendChild(historyItem);
-  const historyItems = document.getElementById("historyItems");
-  historyItems.appendChild(fragment);
-}*/
+  document.getElementById("historyItems").appendChild(historyItem);
+}
