@@ -89,14 +89,14 @@ document
               extractData[key] = childData[key];
               console.log(extractData);
               // htmlinj(extractData);
-              document.getElementById("jumlahTotal").innerHTML =
-                "Rp. " + extractData.jumlah;
             });
             jumlahtotal += parseInt(extractData.jumlah);
             console.log(`ril = ${extractData.jumlah}`);
           });
           console.log(typeof jumlahtotal);
           console.log(`jumlaha = ${jumlahtotal}`);
+          document.getElementById("jumlahTotal").innerHTML =
+            "Rp. " + jumlahtotal;
         }
       });
     } else {
