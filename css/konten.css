@@ -336,7 +336,7 @@ textarea {
     height: 10rem;
 }
 
-button[type="submit"] {
+.buttonsub{
     background-color: #4CAF50;
     color: white;
     padding: 0.5rem 1rem;
@@ -346,7 +346,7 @@ button[type="submit"] {
     cursor: pointer;
 }
 
-button[type="submit"]:hover {
+.buttonsub{
     background-color: #45a049;
 }
 

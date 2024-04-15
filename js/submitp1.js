@@ -8,6 +8,7 @@ import {
   get,
   child,
   push,
+  onValue,
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,7 +32,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 let username = localStorage.getItem("username");
 document.getElementById("username").value = localStorage.getItem("username");
-let database = getDatabase(app);
+const database = getDatabase(app);
 
 document.getElementById("login").addEventListener("click", function () {
   username = document.getElementById("username").value;
@@ -44,7 +45,7 @@ document.getElementById("submit").addEventListener("click", function () {
   let database = getDatabase(app);
   let newRef = ref(
     database,
-    "users/" + username + document.getElementById("urut").value
+    `${username}/ ${document.getElementById("urut").value}`
   );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi").value,
@@ -59,7 +60,7 @@ document.getElementById("submit2").addEventListener("click", function () {
   console.log(username);
   let newRef = ref(
     database,
-    "users/" + username + document.getElementById("urut2").value
+    `${username}/ ${document.getElementById("urut2").value}`
   );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi2").value,
@@ -73,13 +74,66 @@ document.getElementById("submit2").addEventListener("click", function () {
 document
   .getElementById("refresh")
   .addEventListener("click", function (refresh) {
-    let getdata = ref(
-      database,
-      `users/${username}/${document.getElementById("urut")}`
-    );
-    get(getdata).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val().deskripsi);
-      }
-    });
+    let username = localStorage.getItem("username");
+    if (typeof username === "string" && username.length > 0) {
+      let getdata = ref(database, `${username}`);
+      get(getdata).then((snapshot) => {
+        if (snapshot.exists()) {
+          let jumlahtotal = 0;
+          snapshot.forEach(function (childSnapshot) {
+            let extractData = [];
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            console.log("Child key:", childKey);
+            Object.keys(childData).forEach(function (key) {
+              extractData[key] = childData[key];
+              console.log(extractData);
+              // htmlinj(extractData);
+              document.getElementById("jumlahTotal").innerHTML =
+                "Rp. " + extractData.jumlah;
+            });
+            jumlahtotal += parseInt(extractData.jumlah);
+            console.log(`ril = ${extractData.jumlah}`);
+          });
+          console.log(typeof jumlahtotal);
+          console.log(`jumlaha = ${jumlahtotal}`);
+        }
+      });
+    } else {
+      console.error("Invalid username:", username);
+    }
   });
+/*function htmlinj(extractData) {
+  const historyItem = document.createElement("div");
+  historyItem.classList.add("history-anakan");
+
+  const img = document.createElement("img");
+  img.src = `img/money-${transaction.type}-svgrepo-com.svg`;
+  img.classList.add("imgduit");
+  historyItem.appendChild(img);
+
+  const infoContainer = document.createElement("div");
+  infoContainer.classList.add("infokan-kapan");
+
+  const amount = document.createElement("div");
+  amount.classList.add(
+    `duit${transaction.type === "recive" ? "ijo" : "merah"}`
+  );
+  amount.textContent = `Rp. ${extractData.jumlah}`;
+  infoContainer.appendChild(amount);
+
+  const description = document.createElement("div");
+  description.classList.add("buat-apah");
+  description.textContent = transaction.description;
+  infoContainer.appendChild(description);
+
+  const date = document.createElement("div");
+  date.classList.add("kapan");
+  date.textContent = transaction.date;
+  infoContainer.appendChild(date);
+
+  historyItem.appendChild(infoContainer);
+  fragment.appendChild(historyItem);
+  const historyItems = document.getElementById("historyItems");
+  historyItems.appendChild(fragment);
+}*/

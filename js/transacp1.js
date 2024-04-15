@@ -125,6 +125,5 @@ transactions.forEach((transaction) => {
   fragment.appendChild(historyItem);
 });
 
-// Append the new elements to the historyItems container
 const historyItems = document.getElementById("historyItems");
 historyItems.appendChild(fragment);
