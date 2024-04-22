@@ -10,7 +10,7 @@ import {
   push,
   onValue,
   remove,
-  update
+  update,
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -35,6 +35,9 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app);
 let username = localStorage.getItem("username");
 document.getElementById("username").value = localStorage.getItem("username");
+localStorage.setItem("jumlahTotalUtang", "");
+localStorage.setItem("kurangTotalUtang", "");
+localStorage.setItem("kurangTotalTagihan", "");
 
 document.getElementById("login").addEventListener("click", function () {
   username = document.getElementById("username").value;
@@ -244,9 +247,7 @@ function htmlinj2(extractData, nom) {
   infoContainer.classList.add("infokan-kapan");
 
   const amount = document.createElement("div");
-  amount.classList.add(
-    `duitmerah`
-  );
+  amount.classList.add(`duitmerah`);
   amount.textContent = `Rp. ${extractData.jumlah || 0}`;
   infoContainer.appendChild(amount);
 
