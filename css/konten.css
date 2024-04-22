@@ -199,7 +199,12 @@
 .kapan{
     color:#afb7bb;
     flex:1;
-    text-align: right;
+    text-align: center;
+}
+.jenis{
+    color:#565b5e;
+    flex:1;
+    text-align: center;
 }
 .buat-apah{
     color:#6D9886;
@@ -219,7 +224,7 @@
 }
 .no{
     flex:1;
-    text-align: right;
+    text-align: center;
 }
 .jatuhtempo{
     background-color:white;
@@ -359,6 +364,20 @@ button[type="button"]{
 .titletambahp1{
     font-size: 1.3rem;
     margin-top:50px;
+}
+
+.profilep2{
+    flex-direction: row;
+    justify-content:space-between;
+    margin-top: 20px;
+    padding: 40px;
+}
+.text-center{
+    flex:1;
+    column-gap: 20%;
+}
+.sub-section{
+    text-align: left;
 }
 @media screen and (max-width:1000px){
     .varian-title span{

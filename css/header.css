@@ -49,9 +49,8 @@
     
 }
 .navigate-sub{
-    margin-left:6px;
+    margin-left:60px;
     margin-right:6px;
-    width:60px;
     white-space: nowrap;
     /* background-color: gray; */
     display:flex;

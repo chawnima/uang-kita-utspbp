@@ -45,7 +45,7 @@ document.getElementById("submit").addEventListener("click", function () {
   let database = getDatabase(app);
   let newRef = ref(
     database,
-    `${username}/ ${document.getElementById("urut").value}`
+    `${username}/ ${document.getElementById("urut").value || 1}`
   );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi").value,
@@ -60,7 +60,7 @@ document.getElementById("submit2").addEventListener("click", function () {
   console.log(username);
   let newRef = ref(
     database,
-    `${username}/ ${document.getElementById("urut2").value}`
+    `${username}/ ${document.getElementById("urut2").value || 1}`
   );
   set(newRef, {
     deskripsi: document.getElementById("deskripsi2").value,
@@ -100,9 +100,29 @@ function refresh() {
         });
         console.log(typeof jumlahtotal);
         console.log(`jumlaha = ${jumlahtotal}`);
-        document.getElementById("jumlahTotal").innerHTML = "Rp. " + jumlahtotal;
-        document.getElementById("jumlahKeluar").innerHTML =
-          "Rp. " + kurangtotal;
+        let jumlahTotalUtang = parseInt(localStorage.getItem("jumlahTotalUtang"));
+        let kurangTotalUtang = parseInt(localStorage.getItem("kurangTotalUtang"));
+        let kurangTotalTagihan = parseInt(localStorage.getItem("kurangTotalTagihan"));
+        if (jumlahTotalUtang) {
+          document.getElementById("jumlahTotal").innerHTML =
+            "Rp. " + (jumlahtotal + jumlahTotalUtang);
+        } else {
+          document.getElementById("jumlahTotal").innerHTML =
+            "Rp. " + jumlahtotal;
+        }
+        if (kurangTotalTagihan && kurangTotalUtang) {
+          document.getElementById("jumlahKeluar").innerHTML =
+            "Rp. " + (kurangtotal + kurangTotalTagihan + kurangTotalUtang);
+        } else if (kurangTotalTagihan) {
+          document.getElementById("jumlahKeluar").innerHTML =
+            "Rp. " + (kurangtotal + kurangTotalTagihan);
+        } else if (kurangTotalUtang) {
+          document.getElementById("jumlahKeluar").innerHTML =
+            "Rp. " + (kurangtotal + kurangTotalUtang);
+        } else {
+          document.getElementById("jumlahKeluar").innerHTML =
+            "Rp. " + kurangtotal;
+        }
       }
     });
   }
@@ -113,7 +133,7 @@ function htmlinj(extractData, nom) {
   historyItem.classList.add("history-anakan");
 
   const img = document.createElement("img");
-  img.src = `img/money-${
+  img.src = `/img/money-${
     extractData.tipe === "tambah" ? "recive" : "send"
   }-svgrepo-com.svg`;
   img.classList.add("imgduit");
@@ -149,4 +169,3 @@ function htmlinj(extractData, nom) {
 }
 refresh();
 document.getElementById("refresh").addEventListener("click", refresh);
-
