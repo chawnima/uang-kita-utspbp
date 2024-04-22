@@ -133,7 +133,7 @@ function htmlinj(extractData, nom) {
   historyItem.classList.add("history-anakan");
 
   const img = document.createElement("img");
-  img.src = `/img/money-${
+  img.src = `../img/money-${
     extractData.tipe === "tambah" ? "recive" : "send"
   }-svgrepo-com.svg`;
   img.classList.add("imgduit");

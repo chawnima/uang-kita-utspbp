@@ -133,7 +133,7 @@ function htmlinj(extractData, nom) {
   historyItem.classList.add("history-anakan");
 
   const img = document.createElement("img");
-  img.src = `/img/money-${
+  img.src = `../img/money-${
     extractData.tipe === "flexRadioDefault2" ? "recive" : "send"
   }-svgrepo-com.svg`;
   img.classList.add("imgduit");
@@ -236,7 +236,7 @@ function htmlinj2(extractData, nom) {
   historyItem.classList.add("history-anakan");
 
   const img = document.createElement("img");
-  img.src = `/img/money-send-svgrepo-com.svg`;
+  img.src = `../img/money-send-svgrepo-com.svg`;
   img.classList.add("imgduit");
   historyItem.appendChild(img);
 
