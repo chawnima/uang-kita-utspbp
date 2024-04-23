@@ -109,8 +109,11 @@ function refresh() {
             extractData[key] = childData[key];
             console.log(extractData);
           });
-          if (extractData.jumlah) {
+          if (extractData.jumlah && extractData.tipe2 === "tambah") {
             jumlahtotal += parseInt(extractData.jumlah);
+          }
+          else if (extractData.jumlah && extractData.tipe2 === "kurang"){
+            kurangtotal += parseInt(extractData.jumlah);
           }
 
           htmlinj(extractData, no);
